@@ -1,0 +1,14 @@
+type: object
+required:
+- label
+- skillType
+properties:
+  label:
+    type: string
+    description: Skill label
+  skillType:
+    type: string
+    description: Type of skill
+example:
+  label: 'Java'
+  skillType: 'Back'

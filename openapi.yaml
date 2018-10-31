@@ -1,0 +1,45 @@
+openapi: "3.0.1"
+info:
+  title: User Skill Management
+  description: API exposed by User Skill MGMT
+  version: 1.0.0
+  licence:
+    name: Apache Licence 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: https://user-skill-mgmt.k8.wildwidewest.xyz/api-personnes-mock
+    description: Production server
+  - url: https://user-skill-mgmt-dev.k8.wildwidewest.xyz/api-personnes-mock
+    description: Development server
+paths:
+  /skills:
+    get:
+      operationId: getSkills
+      summary: Get all known skills
+      description: |
+        Get all skills that have been added by Employees
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Skill'
+components:
+  schemas:
+    Skill:
+      type: object
+      required:
+      - label
+      - skillType
+      properties:
+        label:
+          type: string
+          description: Skill label
+        skillType:
+          type: string
+          description: Type of skill
+      example:
+        label: 'Java'
+        skillType: 'Back'
