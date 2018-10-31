@@ -19,13 +19,30 @@ paths:
       description: |
         Get all skills that have been added by Employees
       responses:
-        '200':
+        200:
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Skill'
+    post:
+      operationId: postSkill
+      summary: Add a new skill
+      description: |
+        Add a new skill
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+
 components:
   schemas:
     Skill:
@@ -34,6 +51,9 @@ components:
       - label
       - skillType
       properties:
+        id:
+          type: number
+          description: id of the Skill
         label:
           type: string
           description: Skill label
@@ -41,5 +61,6 @@ components:
           type: string
           description: Type of skill
       example:
+        id: 1
         label: 'Java'
         skillType: 'Back'
