@@ -38,10 +38,18 @@ paths:
               $ref: '#/components/schemas/Skill'
       responses:
         201:
+          description: The new skill was created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Skill'
+        400:
+          description: An error occure during the creation of the skill
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
 components:
   schemas:
@@ -64,3 +72,18 @@ components:
         id: 1
         label: 'Java'
         skillType: 'Back'
+    Error:
+      type: object
+      required:
+      - code
+      - label
+      properties:
+        code:
+          type: string
+          description: A unique code that define the error
+        label:
+          type: string
+          description: Label of the error
+      example:
+        code: 'USM001'
+        label: 'Skill already exits.'
