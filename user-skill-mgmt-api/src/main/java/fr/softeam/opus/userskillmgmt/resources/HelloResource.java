@@ -1,21 +1,17 @@
-package fr.softeam.opus.skillusermgmt.resources;
+package fr.softeam.opus.userskillmgmt.resources;
 
+import fr.softeam.opus.userskillmgmt.configuration.EventBusEnum;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 
-public class ServerVerticle extends AbstractVerticle {
+public class HelloResource extends AbstractVerticle {
 
     @Override
     public void start(Future<Void> future) {
 
         Router router = Router.router(vertx);
-//        router.post("/api/*").handler(BodyHandler.create());
-//        router.put("/api/*").handler(BodyHandler.create());
-//        router.patch("/api/*").handler(BodyHandler.create());
-//        router.delete("/api/*").handler(BodyHandler.create());
-
         router.get("/hello").handler(this::sayHello);
 
         vertx.createHttpServer()
@@ -31,10 +27,8 @@ public class ServerVerticle extends AbstractVerticle {
 
     private void sayHello(RoutingContext routingContext) {
 
-//        Vertx vertx = Vertx.vertx();
-
         vertx.eventBus()
-                .<String>send(VertxConsumersEnum.SAY_HELLO.name(), routingContext.getBodyAsJson(), result -> {
+                .<String>send(EventBusEnum.SAY_HELLO.name(), routingContext.getBodyAsJson(), result -> {
                     if (result.succeeded()) {
                         routingContext.response()
                                 .putHeader("content-type", "application/json")

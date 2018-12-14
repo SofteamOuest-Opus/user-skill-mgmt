@@ -12,6 +12,19 @@ servers:
   - url: https://user-skill-mgmt-dev.k8.wildwidewest.xyz/api-personnes-mock
     description: Development server
 paths:
+  /hello:
+    get:
+      operationId: sayHello
+      summary: Say Hello
+      description: |
+        Say Hello
+      responses:
+        200:
+          description: The Hello
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hello'
   /skills:
     get:
       operationId: getSkills
@@ -20,6 +33,7 @@ paths:
         Get all skills that have been added by Employees
       responses:
         200:
+          description: List of skills of a Employee
           content:
             application/json:
               schema:
@@ -54,8 +68,8 @@ components:
     Skill:
       type: object
       required:
-      - label
-      - skillType
+        - label
+        - skillType
       properties:
         id:
           type: number
@@ -73,8 +87,8 @@ components:
     Error:
       type: object
       required:
-      - code
-      - label
+        - code
+        - label
       properties:
         code:
           type: string
@@ -85,3 +99,13 @@ components:
       example:
         code: 'USM001'
         label: 'Skill already exits.'
+    Hello:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The hello message
+      example:
+        message: 'Hello World'

@@ -1,5 +1,5 @@
 {
-    "namespace": "fr.softeam.opus.userkillmgmt",
+    "namespace": "fr.softeam.opus.userskillmgmt.avro",
     "type": "record",
     "name": "EmployeeSkills",
     "fields": [
