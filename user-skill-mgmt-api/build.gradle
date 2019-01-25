@@ -7,7 +7,7 @@ apply plugin: 'application'
 apply plugin: "com.commercehub.gradle.plugin.avro"
 
 
-mainClassName = 'fr.softeam.opus.skillusermgmt.UserSkillMgmt'
+mainClassName = '$moduleName/fr.softeam.opus.skillusermgmt.UserSkillMgmt'
 
 repositories {
     jcenter()
@@ -20,9 +20,11 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile "org.apache.avro:avro:1.8.2"
-    compile "io.vertx:vertx-core:3.6.0"
-    compile "io.vertx:vertx-web:3.6.0"
-    compile "io.vertx:vertx-unit:3.6.0"
+    compile "io.vertx:vertx-core:3.6.2"
+    compile "io.vertx:vertx-web:3.6.2"
+    compile "io.vertx:vertx-unit:3.6.2"
+    compile 'com.mdac:vertx-web-accesslog:1.2.0'
+    compile 'com.mdac:vertx-web-accesslog-logging-appender:1.2.0'
 }
 
 avro {
