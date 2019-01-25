@@ -1,34 +1,39 @@
 package fr.softeam.opus.userskillmgmt.resources;
 
-import com.mdac.vertx.web.accesslogger.appender.printstream.impl.PrintStreamAppenderOptions;
+import com.mdac.vertx.web.accesslogger.AccessLoggerHandler;
+import com.mdac.vertx.web.accesslogger.appender.logging.impl.LoggingAppenderOptions;
 import com.mdac.vertx.web.accesslogger.impl.AccessLoggerOptions;
 import fr.softeam.opus.userskillmgmt.configuration.EventBusEnum;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import com.mdac.vertx.web.accesslogger.AccessLoggerHandler;
-import com.mdac.vertx.web.accesslogger.appender.logging.impl.LoggingAppenderOptions;
 
 import java.util.Arrays;
 
 public class HelloResource extends AbstractVerticle {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloResource.class);
+
     @Override
     public void start(Future<Void> future) {
 
+        LOGGER.info("Start verticle HelloResource");
+
         Router router = Router.router(vertx);
 
-        router
-            .route()
-            .handler(AccessLoggerHandler.create(new AccessLoggerOptions().setPattern("%t %m %U %q %s %D"),
-                    Arrays.asList(
-//                            new PrintStreamAppenderOptions().setPrintStream(System.out),
-                            new LoggingAppenderOptions()
-                                    .setLoggerName("accesslog")
-                    )
-                    )
-            );
+//        router
+//            .route()
+//            .handler(AccessLoggerHandler.create(new AccessLoggerOptions().setPattern("%t %m %U %q %s %D"),
+//                    Arrays.asList(
+////                            new PrintStreamAppenderOptions().setPrintStream(System.out),
+//                            new LoggingAppenderOptions()
+//                                    .setLoggerName("accesslog")
+//                    )
+//                    )
+//            );
 
         router.get("/hello").handler(this::sayHello);
 
@@ -45,9 +50,12 @@ public class HelloResource extends AbstractVerticle {
 
     private void sayHello(RoutingContext routingContext) {
 
+        LOGGER.info("Do say Hello");
+
         vertx.eventBus()
                 .<String>send(EventBusEnum.SAY_HELLO.name(), routingContext.getBodyAsJson(), result -> {
                     if (result.succeeded()) {
+                        LOGGER.info("Say Hello --> OK");
                         routingContext.response()
                                 .putHeader("content-type", "application/json")
                                 .putHeader("Access-Control-Allow-Origin", "*")
@@ -58,6 +66,7 @@ public class HelloResource extends AbstractVerticle {
                                 .end(result.result()
                                         .body());
                     } else {
+                        LOGGER.info("Say Hello --> KO");
                         routingContext.response()
                                 .setStatusCode(500)
                                 .end();

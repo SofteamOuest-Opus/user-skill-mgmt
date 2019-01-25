@@ -6,8 +6,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 import io.vertx.core.json.EncodeException;
 import io.vertx.core.json.Json;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+
 
 public class HelloWorldBlo extends AbstractVerticle {
 
@@ -22,6 +23,7 @@ public class HelloWorldBlo extends AbstractVerticle {
     }
 
     private Handler<Message<String>> sayHello() {
+        LOGGER.info("Say Hello");
         return msg -> vertx.<String>executeBlocking(future -> {
             try {
                 future.complete(Json.encodePrettily("Hello New World"));
