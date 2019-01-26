@@ -1,8 +1,10 @@
-module user.skill.mgmt.application {
+module user.skill.mgmt.api {
     requires vertx.core;
     requires vertx.web;
-    requires slf4j.api;
     requires avro;
-    requires vertx.web.accesslog;
-    requires vertx.web.accesslog.logging.appender;
+    requires vertx.web.api.service;
+    requires vertx.web.api.contract;
+    requires vertx.service.proxy;
+    requires slf4j.api;
+    requires vertx.codegen;
 }

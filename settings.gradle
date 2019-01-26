@@ -10,4 +10,4 @@
 rootProject.name = 'user-skill-mgmt'
 
 include 'user-skill-mgmt-api'
-include 'user-skill-mgmt-client'
+//include 'user-skill-mgmt-client'
