@@ -13,14 +13,23 @@ paths:
     get:
       operationId: sayHello
       x-vertx-event-bus: hello_service.usm
+      parameters:
+        - name: nom
+          in: query
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: The Hello
+          description: The Hello message
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hello'
   /api/skills:
+    x-vertx-event-bus:
+      address: skills_service.usm
+      timeout: 2000
     get:
       operationId: getSkills
       summary: Get all known skills

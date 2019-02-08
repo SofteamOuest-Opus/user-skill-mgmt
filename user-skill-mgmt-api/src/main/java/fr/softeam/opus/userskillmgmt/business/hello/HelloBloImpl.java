@@ -1,0 +1,24 @@
+package fr.softeam.opus.userskillmgmt.business.hello;
+
+import fr.softeam.opus.userskillmgmt.services.HelloService;
+import io.vertx.core.AsyncResult;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
+import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.ext.web.api.OperationRequest;
+import io.vertx.ext.web.api.OperationResponse;
+
+public class HelloBloImpl implements HelloService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloBloImpl.class);
+
+
+    @Override
+    public void sayHello(String nom, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
+        final HelloDTO helloDTO = new HelloDTO();
+        helloDTO.setMessage("HelloDTO " + nom);
+        LOGGER.info("Say Hello to " + nom);
+        resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(JsonObject.mapFrom(helloDTO))));
+    }
+}

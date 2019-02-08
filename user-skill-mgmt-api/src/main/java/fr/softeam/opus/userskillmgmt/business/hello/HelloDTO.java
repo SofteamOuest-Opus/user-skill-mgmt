@@ -1,6 +1,6 @@
-package fr.softeam.opus.userskillmgmt.services.impl;
+package fr.softeam.opus.userskillmgmt.business.hello;
 
-public class Hello {
+public class HelloDTO {
     private String message;
 
     public String getMessage() {

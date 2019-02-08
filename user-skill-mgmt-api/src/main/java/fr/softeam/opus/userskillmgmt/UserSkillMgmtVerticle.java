@@ -1,9 +1,9 @@
 package fr.softeam.opus.userskillmgmt;
 
-import fr.softeam.opus.userskillmgmt.services.HelloManagerService;
+import fr.softeam.opus.userskillmgmt.business.hello.HelloBloImpl;
+import fr.softeam.opus.userskillmgmt.services.HelloService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
@@ -14,9 +14,14 @@ import io.vertx.serviceproxy.ServiceBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class UserSkillMgmt extends AbstractVerticle {
+import javax.inject.Inject;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserSkillMgmt.class);
+public class UserSkillMgmtVerticle extends AbstractVerticle {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserSkillMgmtVerticle.class);
+
+//    @Inject
+//    private HelloService helloService;
 
     HttpServer server;
     ServiceBinder serviceBinder;
@@ -39,19 +44,12 @@ public class UserSkillMgmt extends AbstractVerticle {
         consumer.unregister();
     }
 
-    public static void main(String[] args) {
-        Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new UserSkillMgmt());
-    }
-
     private void startHelloService() {
         serviceBinder = new ServiceBinder(vertx);
 
-        HelloManagerService helloManagerService = HelloManagerService.create();
-
         consumer = serviceBinder
                 .setAddress("hello_service.usm")
-                .register(HelloManagerService.class, helloManagerService);
+                .register(HelloService.class, new HelloBloImpl());
 
     }
 

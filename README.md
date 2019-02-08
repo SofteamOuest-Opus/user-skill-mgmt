@@ -8,10 +8,12 @@ Le code source du client se trouve dans le répertoire user-skill-mgmt-client.
 
 ## Compiler
 ```zsh
-./gradlew build
+./mvnw clean install
 ```
 
 ## Lancer le serveur verticle
+Lancer la classe UserSkillMgmtLauncher avec les params de JVM:
 ```zsh
-./gradlew run
+-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory
+-Dlogback.configurationFile=src/main/resources/logback.xml
 ```

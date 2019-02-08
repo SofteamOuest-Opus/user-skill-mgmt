@@ -15,7 +15,7 @@ paths:
       x-vertx-event-bus: hello_service.usm
       responses:
         200:
-          description: The Hello
+          description: The HelloDTO
           content:
             application/json:
               schema:
@@ -103,4 +103,4 @@ components:
           type: string
           description: The hello message
       example:
-        message: 'Hello World'
+        message: 'HelloDTO World'
