@@ -10,8 +10,8 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.api.OperationRequest;
 import io.vertx.ext.web.api.OperationResponse;
 
-public class HelloBloImpl implements HelloService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloBloImpl.class);
+public class HelloBlo implements HelloService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HelloBlo.class);
 
 
     @Override
@@ -19,6 +19,7 @@ public class HelloBloImpl implements HelloService {
         final HelloDTO helloDTO = new HelloDTO();
         helloDTO.setMessage("HelloDTO " + nom);
         LOGGER.info("Say Hello to " + nom);
+
         resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(JsonObject.mapFrom(helloDTO))));
     }
 }

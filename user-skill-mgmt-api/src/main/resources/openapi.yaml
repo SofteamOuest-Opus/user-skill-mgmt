@@ -26,6 +26,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Hello'
+  /api/version:
+    get:
+      operationId: getVersion
+      x-vertx-event-bus: version_service.usm
+      responses:
+        200:
+          description: Version of the API
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Version'
   /api/skills:
     x-vertx-event-bus:
       address: skills_service.usm
@@ -113,3 +124,13 @@ components:
           description: The hello message
       example:
         message: 'Hello World'
+    Version:
+      type: object
+      required:
+        - version
+      properties:
+        message:
+          type: string
+          description: The API version
+      example:
+        message: 'v1.0'

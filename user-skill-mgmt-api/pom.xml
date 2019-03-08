@@ -21,6 +21,7 @@
         <avro.version>1.8.2</avro.version>
         <slf4j.version>1.7.25</slf4j.version>
         <guice.version>4.2.2</guice.version>
+        <vertx-guice.version>2.3.1</vertx-guice.version>
     </properties>
 
     <dependencyManagement>
@@ -72,10 +73,16 @@
         </dependency>
 
 
+        <!--<dependency>-->
+            <!--<groupId>com.google.inject</groupId>-->
+            <!--<artifactId>guice</artifactId>-->
+            <!--<version>${guice.version}</version>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-            <version>${guice.version}</version>
+            <groupId>com.englishtown.vertx</groupId>
+            <artifactId>vertx-guice</artifactId>
+            <version>${vertx-guice.version}</version>
         </dependency>
 
 
@@ -142,6 +149,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>add-source</id>

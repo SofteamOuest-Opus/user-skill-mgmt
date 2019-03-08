@@ -1,7 +1,7 @@
 package fr.softeam.opus.userskillmgmt;
 
-import fr.softeam.opus.userskillmgmt.business.hello.HelloBloImpl;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
+import fr.softeam.opus.userskillmgmt.services.VersionService;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.MessageConsumer;
@@ -20,24 +20,28 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserSkillMgmtVerticle.class);
 
-//    @Inject
-//    private HelloService helloService;
+    @Inject
+    private HelloService helloService;
 
-    HttpServer server;
-    ServiceBinder serviceBinder;
-    MessageConsumer<JsonObject> consumer;
+    @Inject
+    private VersionService versionService;
 
+    private HttpServer server;
+    private ServiceBinder serviceBinder;
+    private MessageConsumer<JsonObject> consumer;
 
     @Override
     public void start(Future<Void> future) {
         LOGGER.info("Starting User Skill MGMT verticle.");
+
+        // register services
         startHelloService();
+        startVersionService();
+
+        //start server
         startHttpServer().setHandler(future.completer());
     }
 
-    /**
-     * This method closes the http server and unregister all services loaded to Event Bus
-     */
     @Override
     public void stop(){
         this.server.close();
@@ -49,7 +53,16 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
 
         consumer = serviceBinder
                 .setAddress("hello_service.usm")
-                .register(HelloService.class, new HelloBloImpl());
+                .register(HelloService.class, helloService);
+
+    }
+
+    private void startVersionService() {
+        serviceBinder = new ServiceBinder(vertx);
+
+        consumer = serviceBinder
+                .setAddress("version_service.usm")
+                .register(VersionService.class, versionService);
 
     }
 
@@ -64,9 +77,12 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
                 Router router = routerFactory.getRouter();
                 server = vertx.createHttpServer(new HttpServerOptions().setPort(8080).setHost("localhost"));
                 server.requestHandler(router).listen(ar -> {
-                    // Error starting the HttpServer
-                    if (ar.succeeded()) future.complete();
-                    else future.fail(ar.cause());
+                    if (ar.succeeded()) {
+                        future.complete();
+                    }
+                    else {
+                        future.fail(ar.cause());
+                    }
                 });
             } else {
                 // Something went wrong during router factory initialization
