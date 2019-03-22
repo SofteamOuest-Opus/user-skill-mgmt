@@ -1,5 +1,6 @@
-package fr.softeam.opus.userskillmgmt;
+package fr.softeam.opus.userskillmgmt.verticle;
 
+import fr.softeam.opus.userskillmgmt.configuration.handler.RequestLoggerHandler;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
 import fr.softeam.opus.userskillmgmt.services.VersionService;
 import io.vertx.core.AbstractVerticle;
@@ -10,6 +11,8 @@ import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory;
+import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.LoggerHandler;
 import io.vertx.serviceproxy.ServiceBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,6 +78,8 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
                 routerFactory.mountServicesFromExtensions();
 
                 Router router = routerFactory.getRouter();
+                router.route().handler(RequestLoggerHandler.create());
+
                 server = vertx.createHttpServer(new HttpServerOptions().setPort(8080).setHost("localhost"));
                 server.requestHandler(router).listen(ar -> {
                     if (ar.succeeded()) {

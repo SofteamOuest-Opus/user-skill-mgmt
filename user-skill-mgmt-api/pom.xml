@@ -14,7 +14,7 @@
     <properties>
         <java.version>11</java.version>
 
-        <main.verticle>fr.softeam.opus.userskillmgmt.UserSkillMgmtVerticle</main.verticle>
+        <main.verticle>fr.softeam.opus.userskillmgmt.verticle.UserSkillMgmtVerticle</main.verticle>
 
         <vertx.version>3.6.3</vertx.version>
         <logback.version>1.2.3</logback.version>
@@ -22,6 +22,8 @@
         <slf4j.version>1.7.25</slf4j.version>
         <guice.version>4.2.2</guice.version>
         <vertx-guice.version>2.3.1</vertx-guice.version>
+        <kafka.version>1.1.0</kafka.version>
+        <debezium.version>0.8.3.Final</debezium.version>
     </properties>
 
     <dependencyManagement>
@@ -64,19 +66,40 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-unit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
             <artifactId>vertx-web-client</artifactId>
         </dependency>
-
-
         <!--<dependency>-->
-            <!--<groupId>com.google.inject</groupId>-->
-            <!--<artifactId>guice</artifactId>-->
-            <!--<version>${guice.version}</version>-->
+            <!--<groupId>io.vertx</groupId>-->
+            <!--<artifactId>vertx-kafka-client</artifactId>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-health-check</artifactId>
+        </dependency>
+
+        <!-- Elasticsearch -->
+        <dependency>
+            <groupId>com.hubrick.vertx</groupId>
+            <artifactId>vertx-elasticsearch-service</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+        <!--&lt;!&ndash; For running Kafka easily &ndash;&gt;-->
+        <!--<dependency>-->
+            <!--<groupId>io.debezium</groupId>-->
+            <!--<artifactId>debezium-core</artifactId>-->
+            <!--<version>${debezium.version}</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>io.debezium</groupId>-->
+            <!--<artifactId>debezium-core</artifactId>-->
+            <!--<version>${debezium.version}</version>-->
+            <!--<type>test-jar</type>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.apache.kafka</groupId>-->
+            <!--<artifactId>kafka_2.12</artifactId>-->
+            <!--<version>${kafka.version}</version>-->
         <!--</dependency>-->
 
         <dependency>
@@ -107,10 +130,22 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-unit</artifactId>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.12.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -2,6 +2,7 @@ package fr.softeam.opus.userskillmgmt;
 
 import fr.softeam.opus.userskillmgmt.configuration.BeansBinderConfig;
 import fr.softeam.opus.userskillmgmt.configuration.GuiceDeploymentHelper;
+import fr.softeam.opus.userskillmgmt.verticle.UserSkillMgmtVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
