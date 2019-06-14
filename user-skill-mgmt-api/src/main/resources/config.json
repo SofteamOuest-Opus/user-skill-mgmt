@@ -1,0 +1,13 @@
+{
+    "elasticsearch": {
+        "address": "bus.elasticsearch",
+        "transportAddresses": [
+            {
+                "hostname": "localhost",
+                ",port": 9200
+            }
+        ],
+        "cluster_name": "user-skill-mgmt",
+        "client_transport_sniff": true,
+    }
+}

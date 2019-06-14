@@ -24,6 +24,8 @@
         <vertx-guice.version>2.3.1</vertx-guice.version>
         <kafka.version>1.1.0</kafka.version>
         <debezium.version>0.8.3.Final</debezium.version>
+        <elasticsearch.version>6.6.2</elasticsearch.version>
+        <elasticsearch-service.version>2.3.0</elasticsearch-service.version>
     </properties>
 
     <dependencyManagement>
@@ -79,9 +81,14 @@
 
         <!-- Elasticsearch -->
         <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
             <groupId>com.hubrick.vertx</groupId>
             <artifactId>vertx-elasticsearch-service</artifactId>
-            <version>2.3.0</version>
+            <version>${elasticsearch-service.version}</version>
         </dependency>
 
         <!--&lt;!&ndash; For running Kafka easily &ndash;&gt;-->

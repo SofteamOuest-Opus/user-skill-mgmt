@@ -22,14 +22,29 @@ public class GuiceDeploymentHelper {
     public GuiceDeploymentHelper(Vertx vertx, JsonObject config, Class binder) {
         this.vertx = vertx;
         config.put("guice_binder", binder.getName());
-        options = new DeploymentOptions();
-        options.setConfig(config);
+        this.options = new DeploymentOptions();
+        this.options.setConfig(config);
     }
 
     public void deployVerticles(Class verticle) {
         Future<String> future = Future.future();
         futureList.add(future);
         String deploymentName = "java-guice:" + verticle.getName();
+
+        vertx.deployVerticle(deploymentName, this.options, future.completer());
+    }
+
+    public void deployVerticles(String prefix, String verticleName, JsonObject config, Class binder) {
+        Future<String> future = Future.future();
+        futureList.add(future);
+
+        config.put("guice_binder", binder.getName());
+
+        String deploymentName = prefix + ":" + verticleName;
+//        String deploymentName = "java-guice:" +  verticleName;
+
+        options = new DeploymentOptions();
+        options.setConfig(config);
 
         vertx.deployVerticle(deploymentName, options, future.completer());
     }
