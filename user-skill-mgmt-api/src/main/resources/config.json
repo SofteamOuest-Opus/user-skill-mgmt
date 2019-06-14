@@ -8,6 +8,6 @@
             }
         ],
         "cluster_name": "user-skill-mgmt",
-        "client_transport_sniff": true,
+        "client_transport_sniff": true
     }
 }

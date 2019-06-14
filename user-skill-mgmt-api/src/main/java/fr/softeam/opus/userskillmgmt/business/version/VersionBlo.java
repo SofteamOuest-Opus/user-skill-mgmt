@@ -26,7 +26,6 @@ public class VersionBlo implements VersionService {
         this.elasticSearchService = elasticSearchService;
     }
 
-
     @Override
     public void getVersion(OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
 //        final VersionDTO versionDTO = new VersionDTO();
@@ -37,18 +36,17 @@ public class VersionBlo implements VersionService {
             .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
             .setFetchSource(true);
 
-
         elasticSearchService.search("user-skill-mgmt", searchOptions, response -> {
             if(response.succeeded()) {
                 LOGGER.info("Search response: {}", response.result());
                 JsonObject body = response.result().toJson();
                 resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(body)));
             } else {
+                LOGGER.error("Search response: {}", response.result());
+
                 resultHandler.handle(Future.failedFuture("Version not found"));
             }
 //            resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(JsonObject.mapFrom(versionDTO))));
         });
-
-
     }
 }

@@ -5,6 +5,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
+import io.vertx.service.ServiceVerticleFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,33 +18,19 @@ public class GuiceDeploymentHelper {
 
     private List<Future> futureList = new ArrayList<Future>();
     private Vertx vertx;
-    private DeploymentOptions options;
 
     public GuiceDeploymentHelper(Vertx vertx, JsonObject config, Class binder) {
         this.vertx = vertx;
-        config.put("guice_binder", binder.getName());
-        this.options = new DeploymentOptions();
-        this.options.setConfig(config);
-    }
-
-    public void deployVerticles(Class verticle) {
-        Future<String> future = Future.future();
-        futureList.add(future);
-        String deploymentName = "java-guice:" + verticle.getName();
-
-        vertx.deployVerticle(deploymentName, this.options, future.completer());
+        this.vertx.registerVerticleFactory(new ServiceVerticleFactory());
     }
 
     public void deployVerticles(String prefix, String verticleName, JsonObject config, Class binder) {
         Future<String> future = Future.future();
         futureList.add(future);
-
         config.put("guice_binder", binder.getName());
-
         String deploymentName = prefix + ":" + verticleName;
-//        String deploymentName = "java-guice:" +  verticleName;
 
-        options = new DeploymentOptions();
+        DeploymentOptions options = new DeploymentOptions();
         options.setConfig(config);
 
         vertx.deployVerticle(deploymentName, options, future.completer());

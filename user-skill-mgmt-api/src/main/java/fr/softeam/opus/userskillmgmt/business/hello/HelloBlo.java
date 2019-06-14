@@ -24,10 +24,10 @@ public class HelloBlo implements HelloService {
     @Override
     public void sayHello(String nom, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
         LOGGER.info("Say Hello to " + nom);
+        LOGGER.info("ElasticSearchService " + elasticSearchService);
 
         final HelloDTO helloDTO = new HelloDTO();
         helloDTO.setMessage("HelloDTO " + nom);
-
 
         resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(JsonObject.mapFrom(helloDTO))));
     }

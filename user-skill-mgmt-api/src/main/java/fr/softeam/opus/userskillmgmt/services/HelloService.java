@@ -8,8 +8,5 @@ import io.vertx.ext.web.api.generator.WebApiServiceGen;
 
 @WebApiServiceGen
 public interface HelloService {
-
     void sayHello(String nom, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
-
-
 }

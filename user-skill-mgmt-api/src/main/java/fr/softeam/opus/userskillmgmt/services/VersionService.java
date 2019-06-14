@@ -8,6 +8,5 @@ import io.vertx.ext.web.api.generator.WebApiServiceGen;
 
 @WebApiServiceGen
 public interface VersionService {
-
     void getVersion(OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler);
 }

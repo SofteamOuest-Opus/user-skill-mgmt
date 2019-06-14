@@ -24,7 +24,7 @@
         <vertx-guice.version>2.3.1</vertx-guice.version>
         <kafka.version>1.1.0</kafka.version>
         <debezium.version>0.8.3.Final</debezium.version>
-        <elasticsearch.version>6.6.2</elasticsearch.version>
+<!--        <elasticsearch.version>6.6.2</elasticsearch.version>-->
         <elasticsearch-service.version>2.3.0</elasticsearch-service.version>
     </properties>
 
@@ -41,6 +41,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-service-factory</artifactId>
+            <version>${vertx.version}</version>
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-codegen</artifactId>
@@ -79,17 +84,19 @@
             <artifactId>vertx-health-check</artifactId>
         </dependency>
 
-        <!-- Elasticsearch -->
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
+<!--        &lt;!&ndash; Elasticsearch &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.elasticsearch</groupId>-->
+<!--            <artifactId>elasticsearch</artifactId>-->
+<!--            <version>${elasticsearch.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.hubrick.vertx</groupId>
             <artifactId>vertx-elasticsearch-service</artifactId>
             <version>${elasticsearch-service.version}</version>
+
         </dependency>
+
 
         <!--&lt;!&ndash; For running Kafka easily &ndash;&gt;-->
         <!--<dependency>-->
@@ -137,7 +144,6 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-unit</artifactId>
