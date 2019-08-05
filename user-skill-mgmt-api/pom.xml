@@ -25,7 +25,8 @@
         <kafka.version>1.1.0</kafka.version>
         <debezium.version>0.8.3.Final</debezium.version>
         <elasticsearch.version>6.6.2</elasticsearch.version>
-        <elasticsearch-service.version>2.3.0</elasticsearch-service.version>
+        <es-rhlv-version>6.6.2</es-rhlv-version>
+        <reactiverse-es-client-version>0.5.0ec7.2.0</reactiverse-es-client-version>
     </properties>
 
     <dependencyManagement>
@@ -85,12 +86,17 @@
             <artifactId>elasticsearch</artifactId>
             <version>${elasticsearch.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/io.reactiverse/elasticsearch-client -->
         <dependency>
-            <groupId>com.hubrick.vertx</groupId>
-            <artifactId>vertx-elasticsearch-service</artifactId>
-            <version>${elasticsearch-service.version}</version>
+            <groupId>io.reactiverse</groupId>
+            <artifactId>elasticsearch-client</artifactId>
+            <version>${reactiverse-es-client-version}</version>
         </dependency>
-
+        <dependency>
+            <groupId> org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>${es-rhlv-version}</version>
+        </dependency>
         <!--&lt;!&ndash; For running Kafka easily &ndash;&gt;-->
         <!--<dependency>-->
             <!--<groupId>io.debezium</groupId>-->
@@ -155,6 +161,8 @@
             <version>3.12.1</version>
             <scope>test</scope>
         </dependency>
+
+
     </dependencies>
 
     <build>

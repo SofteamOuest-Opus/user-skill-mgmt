@@ -42,8 +42,8 @@ public class UserSkillMgmtLauncher {
         final JsonObject elastic = new JsonObject();
         elastic.put("elasticsearch", conf);
 
-
-        deployer.deployVerticles("service", "com.hubrick.vertx.vertx-elasticsearch-service", elastic, BeansBinderConfig.class);
+        deployer.deployVerticles(UserSkillMgmtVerticle.class);
+//        deployer.deployVerticles("service", "com.hubrick.vertx.vertx-elasticsearch-service", elastic, BeansBinderConfig.class);
     }
 
 }
