@@ -14,14 +14,14 @@ public class BeansBinderConfig extends AbstractModule {
 
     @Provides
     @Singleton
-    public HelloService provideHelloService() {
-        return new HelloBlo();
+    public HelloService provideHelloService(Vertx vertx) {
+        return new HelloBlo(vertx);
     }
 
     @Provides
     @Singleton
-    public ElasticSearchService provideElasticSearchService() {
-        return ElasticSearchService.createEventBusProxy(Vertx.vertx(), "eventbus-address");
+    public ElasticSearchService provideElasticSearchService(Vertx vertx) {
+        return ElasticSearchService.createEventBusProxy(vertx, "eventbus-address");
     }
 
     @Provides

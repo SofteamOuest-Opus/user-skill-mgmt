@@ -6,6 +6,7 @@ import fr.softeam.opus.userskillmgmt.services.HelloService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -17,9 +18,11 @@ import javax.inject.Inject;
 public class HelloBlo implements HelloService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloBlo.class);
 
-    @Inject
-    private ElasticSearchService elasticSearchService;
+    private final Vertx vertx;
 
+    public HelloBlo(Vertx vertx){
+        this.vertx = vertx;
+    }
 
     @Override
     public void sayHello(String nom, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
