@@ -18,7 +18,7 @@ public class HelloBlo implements HelloService {
 
     @Override
     public void sayHello(String nom, OperationRequest context, Handler<AsyncResult<OperationResponse>> resultHandler) {
-        LOGGER.info("Say Hello to " + nom);
+        LOGGER.debug("Say Hello to " + nom);
 
         final HelloDTO helloDTO = new HelloDTO();
         helloDTO.setMessage("HelloDTO " + nom);
