@@ -15,7 +15,6 @@ public class UserSkillMgmtLauncher {
 
         Vertx vertx = Vertx.vertx();
         GuiceDeploymentHelper deployer = new GuiceDeploymentHelper(vertx, new JsonObject(), BeansBinderConfig.class);
-        deployer.deployVerticles(UserSkillMgmtVerticle.class);
 
         deployES(deployer);
         
