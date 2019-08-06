@@ -13,8 +13,8 @@ public class BeansBinderConfig extends AbstractModule {
 
     @Provides
     @Singleton
-    public HelloService provideHelloService(Vertx vertx) {
-        return new HelloBlo(vertx);
+    public HelloService provideHelloService() {
+        return new HelloBlo();
     }
 
     @Provides

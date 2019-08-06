@@ -4,21 +4,16 @@ import fr.softeam.opus.userskillmgmt.services.HelloService;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.api.OperationRequest;
 import io.vertx.ext.web.api.OperationResponse;
 
-
 public class HelloBlo implements HelloService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloBlo.class);
 
-    private final Vertx vertx;
-
-    public HelloBlo(Vertx vertx){
-        this.vertx = vertx;
+    public HelloBlo() {
     }
 
     @Override
@@ -27,7 +22,6 @@ public class HelloBlo implements HelloService {
 
         final HelloDTO helloDTO = new HelloDTO();
         helloDTO.setMessage("HelloDTO " + nom);
-
 
         resultHandler.handle(Future.succeededFuture(OperationResponse.completedWithJson(JsonObject.mapFrom(helloDTO))));
     }
