@@ -7,7 +7,10 @@ import fr.softeam.opus.userskillmgmt.business.hello.HelloBlo;
 import fr.softeam.opus.userskillmgmt.business.version.VersionBlo;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
 import fr.softeam.opus.userskillmgmt.services.VersionService;
+import io.reactiverse.elasticsearch.client.RestHighLevelClient;
 import io.vertx.core.Vertx;
+import org.apache.http.HttpHost;
+import org.elasticsearch.client.RestClient;
 
 public class BeansBinderConfig extends AbstractModule {
 
@@ -27,6 +30,15 @@ public class BeansBinderConfig extends AbstractModule {
     @Singleton
     public ConfigUtils providePropertiesUtils() {
         return new ConfigUtils();
+    }
+
+    @Provides
+    @Singleton
+    public RestHighLevelClient provideRestHighLevelClient(Vertx vertx){
+        //ToDo set host and port from conf
+        return RestHighLevelClient.create(vertx, RestClient.builder(
+                new HttpHost("localhost", 9200, "http")
+        ));
     }
 
 
