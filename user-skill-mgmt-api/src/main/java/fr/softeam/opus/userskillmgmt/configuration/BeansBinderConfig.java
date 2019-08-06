@@ -3,8 +3,10 @@ package fr.softeam.opus.userskillmgmt.configuration;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import fr.softeam.opus.userskillmgmt.business.employee.EmployeeBlo;
 import fr.softeam.opus.userskillmgmt.business.hello.HelloBlo;
 import fr.softeam.opus.userskillmgmt.business.version.VersionBlo;
+import fr.softeam.opus.userskillmgmt.services.EmployeeService;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
 import fr.softeam.opus.userskillmgmt.services.VersionService;
 import io.reactiverse.elasticsearch.client.RestHighLevelClient;
@@ -28,6 +30,12 @@ public class BeansBinderConfig extends AbstractModule {
 
     @Provides
     @Singleton
+    public EmployeeService provideEmployeeService(RestHighLevelClient client){
+        return new EmployeeBlo(client);
+    }
+
+    @Provides
+    @Singleton
     public ConfigUtils providePropertiesUtils() {
         return new ConfigUtils();
     }
@@ -40,8 +48,6 @@ public class BeansBinderConfig extends AbstractModule {
                 new HttpHost("localhost", 9200, "http")
         ));
     }
-
-
 
     @Override
     protected void configure() {

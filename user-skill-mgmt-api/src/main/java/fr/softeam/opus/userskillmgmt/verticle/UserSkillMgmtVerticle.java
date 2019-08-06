@@ -1,6 +1,7 @@
 package fr.softeam.opus.userskillmgmt.verticle;
 
 import fr.softeam.opus.userskillmgmt.configuration.handler.RequestLoggerHandler;
+import fr.softeam.opus.userskillmgmt.services.EmployeeService;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
 import fr.softeam.opus.userskillmgmt.services.VersionService;
 import io.vertx.core.AbstractVerticle;
@@ -27,6 +28,9 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
     @Inject
     private VersionService versionService;
 
+    @Inject
+    private EmployeeService employeeService;
+
     private HttpServer server;
     private ServiceBinder serviceBinder;
     private MessageConsumer<JsonObject> consumer;
@@ -38,6 +42,7 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
         // register services
         startHelloService();
         startVersionService();
+        startEmployeeService();
 
         //start server
         startHttpServer().setHandler(future.completer());
@@ -64,6 +69,15 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
         consumer = serviceBinder
                 .setAddress("version_service.usm")
                 .register(VersionService.class, versionService);
+
+    }
+
+    private void startEmployeeService() {
+        serviceBinder = new ServiceBinder(vertx);
+
+        consumer = serviceBinder
+                .setAddress("employees_service.usm")
+                .register(EmployeeService.class, employeeService);
 
     }
 
