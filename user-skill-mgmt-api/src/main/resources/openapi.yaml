@@ -101,10 +101,6 @@ paths:
                 $ref: '#/components/schemas/Employee'
         404:
           description: The employee doesn't exists
-          content:
-            application/json:
-              schema:
-                type: string
 components:
   schemas:
     Skill:
