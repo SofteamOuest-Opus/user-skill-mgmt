@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Constants from '../../utils/Constants';
 import Employee from '../../utils/interfaces/employee';
+import EmployeeSkillView from './employee-skill-view';
 
 interface EmployeeSkillsState {
     isLoading: boolean,
@@ -40,7 +41,7 @@ class EmployeeSkills extends Component<{}, EmployeeSkillsState> {
                 info = <p>An error ocurred : {this.state.error}</p>
             } else if(this.state.employee){
                 let employee : Employee = this.state.employee;
-                info = <p>Employee {employee.employeeId} </p>;
+                info = <EmployeeSkillView employee={this.state.employee} />;
             }
         }
         return (
