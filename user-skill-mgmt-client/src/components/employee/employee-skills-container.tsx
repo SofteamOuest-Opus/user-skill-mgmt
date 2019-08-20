@@ -1,53 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Constants from '../../utils/Constants';
 import Employee from '../../utils/interfaces/employee';
 import EmployeeSkillView from './employee-skill-view';
 
-interface EmployeeSkillsState {
+interface EmployeeContainerState {
     isLoading: boolean,
-    employee?: Employee,
-    error: any
+    employee?: Employee, //The state can or cannot (?) contain the employee info
+    error?: any          //The state can or cannot (?) contain an error
 }
 
-class EmployeeSkills extends Component<{}, EmployeeSkillsState> {
-    constructor(props:  {}){
-        super(props);
-        this.state = {
-            isLoading: true,
-            error: null
-        }
-    }
+const EmployeeSkills = () => {
+    const initialState : EmployeeContainerState = {isLoading: true}
+    const [employeeState, setEmployeeState] = useState(initialState);
 
-    componentDidMount() : void {
+    useEffect(() => {
         fetch(Constants.API + Constants.EMPLOYEE_API.replace("{employeeId}", "1"))
             .then(response => response.json())
             .then(responseJson => {
-                this.setState({isLoading: false, employee: responseJson, error: null});
+                setEmployeeState({isLoading: false, employee: responseJson, error: null});
             })
             .catch(error => {
                 console.error(error);
-                this.setState({isLoading: false, error: error});
+                setEmployeeState({isLoading: false, error: error});
             });
-    }
+    }, []);
 
-
-    render(){
-        let info = <p>Error fetching the employee info</p>
-        if(this.state.isLoading){
-            info = <p>Loading...</p>
-        } else {
-            if(this.state.error){
-                info = <p>An error ocurred : {this.state.error}</p>
-            } else if(this.state.employee){
-                let employee : Employee = this.state.employee;
-                info = <EmployeeSkillView employee={this.state.employee} />;
-            }
+    let info : JSX.Element = <p>Loading...</p>
+    if(!employeeState.isLoading){
+        if(employeeState.error){
+            info = <p>An error ocurred : {employeeState.error}</p>
+        } else if(employeeState.employee){
+            info = (
+                <div>
+                    <h4>Hello employee #{employeeState.employee.employeeId}</h4>
+                    <EmployeeSkillView employee={employeeState.employee} />
+                </div>
+            );
         }
-        return (
-            <div>{info}</div>
-        );
     }
+    return(
+        <div className="container">
+            {info}
+        </div>
+    );
 }
 
 export default EmployeeSkills;

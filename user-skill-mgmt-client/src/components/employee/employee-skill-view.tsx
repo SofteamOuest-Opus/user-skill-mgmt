@@ -5,30 +5,30 @@ import Skill from "../../utils/interfaces/skill";
 
 const EmployeeSkillView: SFC<{employee : Employee}> = (props) => {
     return (
-        <div className="container">
-            <h2>Employee ID {props.employee.employeeId}</h2>
-            <h3>Skills</h3>
+        <div>
+            <h5>Skills</h5>
             {renderSkills(props.employee.skills)}
         </div>
     );
 }
 
+/**
+ * We create card displaying the informations of each skill.
+ */
 const renderSkills = (skills : Skill[]) => {
-    let skillsRender: JSX.Element[] = [];
-    skills.forEach(skill => {
-        skillsRender.push(
-            <div className="card col-4">
+    return skills.map((skill) => {
+        return (
+            <div className="card col-4" key={skill.id}>
                 <div className="card-body">
                     <h5 className="card-title">{skill.label}</h5>
                     <h6 className="card-subtitle mb-2 text-muted">{skill.level}</h6>
                     <div className="card-text">
-                        <p><small>Category :</small> {skill.category.label}</p>
+                        <p><small>Category : </small>{skill.category.label}</p>
                     </div>
                 </div>
             </div>
         )
     });
-    return skillsRender;
 }
 
 export default EmployeeSkillView;
