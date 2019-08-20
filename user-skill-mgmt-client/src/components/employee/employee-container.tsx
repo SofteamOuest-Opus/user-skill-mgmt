@@ -4,7 +4,7 @@ import Constants from '../../utils/Constants';
 import Employee from '../../utils/interfaces/employee';
 import EmployeeSkillView from './employee-skill-view';
 
-const EmployeeSkills = () => {
+const EmployeePage = () => {
     const [isLoading, setIsLoadingState] = useState(true);
     const [employeeState, setEmployeeState] = useState({} as Employee);
     const [errorState, setErrorState] = useState(null);
@@ -48,4 +48,4 @@ const EmployeeSkills = () => {
     );
 }
 
-export default EmployeeSkills;
+export default EmployeePage;
