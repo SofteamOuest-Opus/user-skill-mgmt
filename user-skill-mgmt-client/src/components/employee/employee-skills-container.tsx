@@ -4,37 +4,39 @@ import Constants from '../../utils/Constants';
 import Employee from '../../utils/interfaces/employee';
 import EmployeeSkillView from './employee-skill-view';
 
-interface EmployeeContainerState {
-    isLoading: boolean,
-    employee?: Employee, //The state can or cannot (?) contain the employee info
-    error?: any          //The state can or cannot (?) contain an error
-}
-
 const EmployeeSkills = () => {
-    const initialState : EmployeeContainerState = {isLoading: true}
-    const [employeeState, setEmployeeState] = useState(initialState);
+    const [isLoading, setIsLoadingState] = useState(true);
+    const [employeeState, setEmployeeState] = useState({} as Employee);
+    const [errorState, setErrorState] = useState(null);
 
     useEffect(() => {
         fetch(Constants.API + Constants.EMPLOYEE_API.replace("{employeeId}", "1"))
             .then(response => response.json())
             .then(responseJson => {
-                setEmployeeState({isLoading: false, employee: responseJson, error: null});
+                // Once we have the employee information we update the state
+                setIsLoadingState(false)
+                setEmployeeState(responseJson);
             })
             .catch(error => {
+                //If an error ocurred we update the state with such error
                 console.error(error);
-                setEmployeeState({isLoading: false, error: error});
+                setIsLoadingState(false)
+                setErrorState(error);
             });
     }, []);
-
+    
+    // By default we display a loading page
     let info : JSX.Element = <p>Loading...</p>
-    if(!employeeState.isLoading){
-        if(employeeState.error){
-            info = <p>An error ocurred : {employeeState.error}</p>
-        } else if(employeeState.employee){
+    
+    if(!isLoading){
+        
+        if(errorState){ // If an error exists it's displayed
+            info = <p>An error ocurred : {errorState}</p>
+        } else if(Object.keys(employeeState).length > 0){ // If the employee info exists it's displayed
             info = (
                 <div>
-                    <h4>Hello employee #{employeeState.employee.employeeId}</h4>
-                    <EmployeeSkillView employee={employeeState.employee} />
+                    <h4>Hello employee #{employeeState.employeeId}</h4>
+                    <EmployeeSkillView employee={employeeState} />
                 </div>
             );
         }
