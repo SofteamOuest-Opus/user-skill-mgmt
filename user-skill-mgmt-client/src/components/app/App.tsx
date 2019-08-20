@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
-import Routes from '../../router';
+import Routes from '../../routes';
 import { Link } from 'react-router-dom';
 
 const App = () => {
