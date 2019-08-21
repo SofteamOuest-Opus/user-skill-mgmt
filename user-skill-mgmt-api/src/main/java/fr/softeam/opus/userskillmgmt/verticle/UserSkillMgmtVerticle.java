@@ -10,8 +10,14 @@ import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.oauth2.KeycloakHelper;
+import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.auth.oauth2.OAuth2FlowType;
+import io.vertx.ext.auth.oauth2.providers.KeycloakAuth;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory;
+import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.serviceproxy.ServiceBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,9 +95,19 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
 
                 routerFactory.mountServicesFromExtensions();
 
-                Router router = routerFactory.getRouter();
+
 
                 // TODO : add security handler
+                OAuth2Auth oAuth2 = KeycloakAuth.create(this.vertx, OAuth2FlowType.AUTH_CODE, getKeycloakJson());
+                OAuth2AuthHandler oauth2Handler = OAuth2AuthHandler.create(oAuth2);
+                routerFactory.addSecurityHandler("oAuthKeycloak", oauth2Handler);
+
+
+                Router router = routerFactory.getRouter();
+
+                oauth2Handler.setupCallback(router.get("/callback"));
+                router.get("/api/currentuser").handler(this::currentUser); // ToDo move to openapi.yml
+
 
                 // TODO : add request/response logger
                 router.route().handler(RequestLoggerHandler.create());
@@ -111,6 +127,22 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
             }
         });
         return future;
+    }
+
+    private JsonObject getKeycloakJson(){
+        return new JsonObject()
+                .put("realm", "skill_mgmt")
+                .put("auth-server-url", "http://localhost:9080/auth")
+                .put("ssl-required", "external")
+                .put("resource", "skill_mgmt_vertx")
+                .put("public-client", true)
+                .put("confidential-port", 0);
+    }
+
+    public void currentUser(RoutingContext context) {
+        String accessToken = KeycloakHelper.rawAccessToken(context.user().principal());
+//        JsonObject token = KeycloakHelper.parseToken(accessToken);
+        context.response().end(accessToken);
     }
 }
 
