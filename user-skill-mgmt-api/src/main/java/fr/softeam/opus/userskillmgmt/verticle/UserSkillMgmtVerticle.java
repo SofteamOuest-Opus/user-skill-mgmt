@@ -106,8 +106,6 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
                 Router router = routerFactory.getRouter();
 
                 oauth2Handler.setupCallback(router.get("/callback"));
-                router.get("/api/currentuser").handler(this::currentUser); // ToDo move to openapi.yml
-
 
                 // TODO : add request/response logger
                 router.route().handler(RequestLoggerHandler.create());
@@ -129,6 +127,7 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
         return future;
     }
 
+    // ToDo : Externalise file
     private JsonObject getKeycloakJson(){
         return new JsonObject()
                 .put("realm", "skill_mgmt")
@@ -139,11 +138,7 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
                 .put("confidential-port", 0);
     }
 
-    public void currentUser(RoutingContext context) {
-        String accessToken = KeycloakHelper.rawAccessToken(context.user().principal());
-//        JsonObject token = KeycloakHelper.parseToken(accessToken);
-        context.response().end(accessToken);
-    }
+
 }
 
 
