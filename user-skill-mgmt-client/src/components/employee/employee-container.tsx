@@ -31,6 +31,7 @@ const EmployeePage = () => {
     if(!isLoading){
         
         if(errorState){ // If an error exists it's displayed
+            console.log("errorstate=" + errorState);
             info = <p>An error ocurred : {errorState}</p>
         } else if(Object.keys(employeeState).length > 0){ // If the employee info exists it's displayed
             info = (
