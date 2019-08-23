@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import Routes from '../../routes';
-import { Link } from 'react-router-dom';
 import Navbar from '../../utils/navbar/navbar-view';
 
 const App = () => {
