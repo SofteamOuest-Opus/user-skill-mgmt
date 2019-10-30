@@ -1,0 +1,12 @@
+{
+    "realm": "skill_mgmt",
+    "auth-server-url": "http://localhost:9080/auth",
+    "ssl-required": "external",
+    "resource": "skill_mgmt_react",
+    "verify-token-audience": true,
+    "credentials": {
+      "secret": "a0151b6f-f33a-408d-8005-7c9b1a2aeee7"
+    },
+    "use-resource-role-mappings": true,
+    "confidential-port": 0
+  }

@@ -1,6 +1,7 @@
 package fr.softeam.opus.userskillmgmt.verticle;
 
 import fr.softeam.opus.userskillmgmt.configuration.handler.RequestLoggerHandler;
+import fr.softeam.opus.userskillmgmt.services.EmployeeService;
 import fr.softeam.opus.userskillmgmt.services.HelloService;
 import fr.softeam.opus.userskillmgmt.services.VersionService;
 import io.vertx.core.AbstractVerticle;
@@ -9,8 +10,14 @@ import io.vertx.core.eventbus.MessageConsumer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.auth.oauth2.KeycloakHelper;
+import io.vertx.ext.auth.oauth2.OAuth2Auth;
+import io.vertx.ext.auth.oauth2.OAuth2FlowType;
+import io.vertx.ext.auth.oauth2.providers.KeycloakAuth;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.api.contract.openapi3.OpenAPI3RouterFactory;
+import io.vertx.ext.web.handler.OAuth2AuthHandler;
 import io.vertx.serviceproxy.ServiceBinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +34,9 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
     @Inject
     private VersionService versionService;
 
+    @Inject
+    private EmployeeService employeeService;
+
     private HttpServer server;
     private ServiceBinder serviceBinder;
     private MessageConsumer<JsonObject> consumer;
@@ -38,6 +48,7 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
         // register services
         startHelloService();
         startVersionService();
+        startEmployeeService();
 
         //start server
         startHttpServer().setHandler(future.completer());
@@ -67,6 +78,15 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
 
     }
 
+    private void startEmployeeService() {
+        serviceBinder = new ServiceBinder(vertx);
+
+        consumer = serviceBinder
+                .setAddress("employees_service.usm")
+                .register(EmployeeService.class, employeeService);
+
+    }
+
     private Future<Void> startHttpServer() {
         Future<Void> future = Future.future();
         OpenAPI3RouterFactory.create(this.vertx, "/openapi.yaml", openAPI3RouterFactoryAsyncResult -> {
@@ -75,9 +95,17 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
 
                 routerFactory.mountServicesFromExtensions();
 
-                Router router = routerFactory.getRouter();
+
 
                 // TODO : add security handler
+                OAuth2Auth oAuth2 = KeycloakAuth.create(this.vertx, OAuth2FlowType.AUTH_CODE, getKeycloakJson());
+                OAuth2AuthHandler oauth2Handler = OAuth2AuthHandler.create(oAuth2);
+                routerFactory.addSecurityHandler("oAuthKeycloak", oauth2Handler);
+
+
+                Router router = routerFactory.getRouter();
+
+                oauth2Handler.setupCallback(router.get("/callback"));
 
                 // TODO : add request/response logger
                 router.route().handler(RequestLoggerHandler.create());
@@ -98,6 +126,19 @@ public class UserSkillMgmtVerticle extends AbstractVerticle {
         });
         return future;
     }
+
+    // ToDo : Externalise file
+    private JsonObject getKeycloakJson(){
+        return new JsonObject()
+                .put("realm", "skill_mgmt")
+                .put("auth-server-url", "http://localhost:9080/auth")
+                .put("ssl-required", "external")
+                .put("resource", "skill_mgmt_vertx")
+                .put("public-client", true)
+                .put("confidential-port", 0);
+    }
+
+
 }
 
 

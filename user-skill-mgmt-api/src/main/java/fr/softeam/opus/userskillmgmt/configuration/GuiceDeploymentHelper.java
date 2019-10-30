@@ -1,9 +1,6 @@
 package fr.softeam.opus.userskillmgmt.configuration;
 
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Future;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +29,11 @@ public class GuiceDeploymentHelper {
         String deploymentName = "java-guice:" + verticle.getName();
 
         vertx.deployVerticle(deploymentName, this.options, future.completer());
+    }
+
+    public void deployVerticle(Class verticle, Handler<AsyncResult<String>> handler){
+        String deploymentName = "java-guice:" + verticle.getName();
+        vertx.deployVerticle(deploymentName, this.options, handler);
     }
 
     public void deployVerticles(String prefix, String verticleName, JsonObject config, Class binder) {

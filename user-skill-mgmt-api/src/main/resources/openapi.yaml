@@ -78,6 +78,31 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/employees/{employeeId}:
+    x-vertx-event-bus:
+      address: employees_service.usm
+      timeout: 2000
+    parameters:
+      - name: employeeId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getEmployeeById
+      summary: Get one employee by Id
+      description: Get the employee that ahs the same id as the path parameter
+      responses:
+        200:
+          description: Get the information from the employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        404:
+          description: The employee doesn't exists
+      security:
+        - oAuthKeycloak : []
 components:
   schemas:
     Skill:
@@ -134,3 +159,24 @@ components:
           description: The API version
       example:
         message: 'v1.0'
+    Employee:
+      type: object
+      required:
+        - id
+        - skills
+      properties:
+        id:
+          type: number
+          description: id of the Employee
+        skills:
+          type: array
+          description: list of skills of the Employee
+      example: 'id : 1, skills: []'
+  securitySchemes:
+    oAuthKeycloak:
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)
+      flows:
+        implicit:   # <---- OAuth flow(authorizationCode, implicit, password or clientCredentials)
+          authorizationUrl: http://localhost:9080/auth
+          scopes: {}
