@@ -24,7 +24,7 @@
         <vertx-guice.version>2.3.1</vertx-guice.version>
         <kafka.version>1.1.0</kafka.version>
         <debezium.version>0.8.3.Final</debezium.version>
-        <elasticsearch.version>6.6.2</elasticsearch.version>
+        <elasticsearch.version>6.8.15</elasticsearch.version>
         <es-rhlv-version>6.6.2</es-rhlv-version>
         <reactiverse-es-client-version>0.5.0ec7.2.0</reactiverse-es-client-version>
     </properties>
